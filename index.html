@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            border:0;
+            padding:0;
+        }
+        div{
+            overflow:hidden;
+        }
+        body{
+            width: 3000px;
+            background-color: #eeeeee;
+        }
+    </style>
+    <script src="./../libs/threejs/three.min.js"></script>
+    <script src="./../libs/jquery-1.4.1.min.js"></script>
+    <script src="./web3dview.js"></script>
+    <script src="../src/WONDERCITY.js"></script>
+    <script src="../src/threejsADV/Frame3D.js"></script>
+    <script src="../src/threejsADV/loaders/OBJLoader.js"></script>
+    <script>
+        var onReady=function()
+        {
+            scrollToCenter();
+            $(window).resize(scrollToCenter);
+            //初始化3D场景：
+            loadScene1();
+            loadScene2();
+            //alert($("#web3d").width-100);
+        };
+        $(document).ready(onReady);
+
+    </script>
+    <title>网页3D视觉新体验</title>
+</head>
+<body>
+<div id="titlebar" style="margin: 0 auto;background-color: #425a52;color: #eeeeee; text-align: center;padding-top: 20px;">
+    <img src="logo.png" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webGL 让上网更精彩
+</div>
+<div style="margin: 0 auto; height: 200px;">
+    <div id="left" style="width: 50%; height: 100%; float: left; background-color: #527384; text-align: right;">
+        <img src="text1.png">
+    </div>
+    <div id="right" style="width: 50%; height: 100%; float: left; background-color:#318442;">
+        <img src="bar_bg.png"><img src="text2.png">
+    </div>
+    <div style="clear: both"></div>
+</div>
+<div id="drag_down" style="height: 1000px; margin: 0 auto; background-color: #e6e6bd;text-align: center;">
+    <br />
+    <img src="webBroswer.png" style="width: 300px;"/><br />
+    <a href="javascript:scrollToWeb3d(1);" title="点此预览"> <img src="dropdown.png"></a>
+</div>
+<div id="web3d1" style="height: 400px; margin: 0 auto;width: 800px;background-color: #555555;">
+</div>
+<div id="drag_down2" style="height: 1000px; margin: 0 auto; background-color: #e6e6bd;text-align: center;">
+    <br />
+    <a href="javascript:scrollToWeb3d(0);" title="点此预览"> <img src="dropdown.png"></a>
+</div>
+<div style="margin: 0 auto; background-color: #333333;text-align: center; padding: 10px;">
+    <span id="web3d" style="height: 250px; margin: 0 auto;width: 600px;background-color: #ffffff;padding: 10px;display: inline-block;">
+    </span>
+    <span style="display: inline-block;margin-top:10px;">
+        &nbsp;&nbsp;&nbsp;<img src="try_drag.png" style="width: 200px; margin-top:60px;" /><br /><br /><br /><br />
+    </span>
+</div>
+<div id="drag_down3" style="height: 1000px; margin: 0 auto; background-color: #e6e6bd;">
+    11
+</div>
+<div id="last" style="height: 600px; margin: 0 auto; background-color: #dddddd;">
+    11
+</div>
+<div id="footer" style="height: 60px; margin: 0 auto; background-color: black; color: #bbbbbb; text-align: center">
+    HotineStudio2015
+</div>
+</body>
+</html>
