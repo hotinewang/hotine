@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+				<title>电子健康码</title>
+</head>
+<body>
+				<script>
+								var uname1="张海龙";
+								var uname2=" **龙";
+								var uid1="370883198807284417";
+								var uid2="3708**********17";
+								
+								function fun1(v)
+								{
+											v+="";
+												if(v.length==1)
+												{v="0"+v;}
+											return v
+								};
+								function loop()
+								{
+												var date=new Date();
+												document.getElementById("mDate").innerHTML=(date.getMonth()+1)+"月"+date .getDate()+"日";
+												document.getElementById("mTime").innerHTML=fun1(date.getHours())+":"+fun1(date.getMinutes())+":"+fun1(date.getSeconds());
+												setTimeout(loop,500);
+								};
+								function onClickEye()
+								{
+									var eye1=document.getElementById("eye1");
+									//alert(eye1.style.display);
+									if(eye1.style.display=="none")
+									{
+										eye1.style.display="inline";
+										document.getElementById("eye2").style.display="none";
+										document.getElementById("username").innerHTML=uname1;
+										document.getElementById("userid").innerHTML=uid1;
+									}
+									else
+									{
+										eye1.style.display="none";
+										document.getElementById("eye2").style.display="inline";
+										document.getElementById("username").innerHTML=uname2;
+										document.getElementById("userid").innerHTML=uid2;
+									}
+									
+								}
+								//setTimeout(loop,500);
+								
+				</script>
+				<style>
+								body{background-color:#008001;font-size:14px;font-family:"Droid Sans"}
+								.center{text-align:center}
+				</style>
+				
+				<div style="width:350px;height:57px;background-color:#e6e5e3;margin:auto;margin-top:30px;border-top-left-radius:10px;border-top-right-radius:10px;">
+								
+								<div style="width:30px;height:23px;margin-top:18px;margin-left:15px;float:left;">
+												<img src="people.jpg" alt="" style="width:27px;height:23px;" />
+								</div>
+								<div style="line-height:57px;margin-top:10px;margin-left:5px;clear:right;">电子健康码 </div>
+				</div>
+				<!-- 二维码外框 -->
+				<div style="width:350px;margin:auto;background-color:#ffffff;border-bottom-left-radius:10px;border-bottom-right-radius:10px;background-image:url(bg.png);background-size:cover;" class="center">
+								<div id="mDate" style="font-size:30px;font-weight:bold;">&nbsp</div>
+								<div id="mTime" style="font-size:33px;font-weight:bold;">&nbsp</div>
+								<!-- 二维码 -->
+								<div style="width:230px;height:230px;margin:auto;background-color:#ffffff;background-image:url(gold.gif);">
+												<div style="height:8px;"></div>
+												<div ><img src="tl.png" style="width:30px;height:30px;position:relative;left:-110px;top:-15px;"  /></div>
+												<div style="margin:auto;width:214px;height:214px;">
+																<img src="QR.jpg" style="width:214px;height:214px;position:relative;top:-34px;"/>
+												</div>
+								</div>
+								<div style="font-size:18px;font-weight:bold;color:#d8b484">已接种新冠疫苗</div>
+								<div style="font-size:18px;font-weight:bold;">
+												&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span id="username"></span>
+												<div style="font-size:18px;font-weight:bold;float:right;margin-right:50px;">
+																<img id="eye1" src="eye1.jpg" style="width:23px;height:16px;display:none" onclick="onClickEye();"/>
+																<img id="eye2" src="eye2.jpg" style="width:23px;height:16px" onclick="onClickEye();"/>
+												</div>
+								</div>
+								
+								<div id="userid" style="font-size:18px;font-weight:bold;clear:both;"></div>
+								<div style="font-size:14px;width:320px;margin:auto;padding:7px;font-weight:bold;border:1.3px solid #eeeeee;text-align:left;">近14天您途径过:山东省济宁市</div>
+								<br/>
+				</div>
+				<!-- 链接处 -->
+				<div style="width:340px;background-color:#0c860d;margin:auto;margin-top:15px;border-radius:5px;color:#ffffff;">
+								<div style="height:50px;border-bottom:1.3px solid #6eb66d;line-height:50px;padding-left:15px;">核酸检测信息查询<span style="float:right;font-weight:bold;">>&nbsp&nbsp</span><span style="clear:both;"></span></div>
+								<div style="height:50px;border-bottom:1.3px solid #6eb66d;line-height:50px;padding-left:15px;">疫苗接种查询<span style="float:right;font-weight:bold;">已全程接种&nbsp>&nbsp&nbsp</span><span style="clear:both;"></span></div>
+								<div style="height:50px;line-height:50px;padding-left:15px;">各地健康码服务热线<span style="float:right;font-weight:bold;">>&nbsp&nbsp</span><span style="clear:both;"></span></div>
+				</div>
+				<!-- 最下小字 -->
+				<div style="width:350px;color:#cce6cb;margin:auto;margin-top:15px;">数据来源:国家政务服务平台、通信大数据行程卡、山东省公共管理机构</div>
+				<br /><br /><br />
+				<script>
+								loop();
+								document.getElementById("username").innerHTML=uname2;
+								document.getElementById("userid").innerHTML=uid2;
+				</script>
+</body>
+</html>
