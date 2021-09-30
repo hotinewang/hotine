@@ -172,7 +172,7 @@ div{
 				daterow.appendChild(dayElement);
 		  }
 		  //alert((allday+xinqi+7)%7);
-		  for(var t=0;t<7-(allday+xinqi+7)%7;t++)
+		  for(var t=0;t<(7-(allday+xinqi+7)%7)%7;t++)
 		  {
 			var dayElement=document.createElement("div");
 			    dayElement.className="evrday";
