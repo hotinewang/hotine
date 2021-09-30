@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>ฅʕ•ᴥ•ʔ日历</title>
+<style type="text/css">
+body{
+	background-color:#eeeeee;
+}
+div{
+	margin:0px;
+	padding:0px;
+	border:0px;
+}
+.evrday{
+	width:58px;
+	height:40px;
+	line-height:40px;
+	float:left;
+	background-color:#ffffff;
+	border:1px solid #fafafa;
+	}
+.evrday1{
+	width:60px;
+	height:40px;
+	line-height:40px;
+	float:left;
+	font-weight:bold;
+	background-color:#dddddd;
+	
+	}
+#calendar{
+	width:420px;
+	margin:auto;
+	text-align:center;
+	background-color:#ffffff;
+}
+.button{
+	width:25%;
+	height:30px;
+	line-height:30px;
+	float:left;
+	background-color:#00B51D;
+	color:#fff;
+}
+#month{
+	width:50%;
+	float:left;
+	height:30px;
+	line-height:30px;
+	background-color:#97D9A1;
+	color:#fff;
+	font-weight:bold;
+}
+#day{
+	background-color:#ffffff;
+}
+.evrday-day1{
+	background-image:"1.png";
+}
+.evrday-day2{
+	background-image:"2.png";
+}
+.evrday-day3{
+	background-image:"3.png";
+}
+
+
+
+ 
+</style>
+</head>
+<body onLoad="showday()">
+<br />
+<div id="calendar">
+    <div >
+       <div class="button" onClick="shang()">上个月</div>
+       <div id="month"></div>
+       <div class="button" onClick="next()" id="nav">下个月</div>
+    </div>
+    
+    <div>
+       <div class="evrday1">日</div>
+       <div class="evrday1">一</div>
+       <div class="evrday1">二</div>
+       <div class="evrday1">三</div>
+       <div class="evrday1">四</div>
+       <div class="evrday1">五</div>
+       <div class="evrday1">六</div>
+    </div>
+    
+    <div id="day"  ></div>
+</div>
+ <script> 		
+   var today=new Date();//获取当前时间
+	  var year=today.getFullYear();//获取当前的年份
+	  var month=today.getMonth()+1;//获取当前月
+	  var day=today.getDate();//获取当前月
+	  var allday=0;
+	  function showmonth()
+	  {
+	    var year_month=year+"年"+month+"月";
+	        document.getElementById("month").innerHTML=year_month;//显示当前的年月日
+	  }
+	
+	  function count()
+	  {
+		  if(month!=2)
+		  {
+		  if(month==4||month==6||month==9||month==11)//判断是否是相同天数的几个月，二月除外
+		     allday=30;
+			 else
+			 allday=31;
+		  }
+		  else
+		  {
+			  if((year%4==0&&year%100!=0)||(year%400==0))//判断是否是闰年，进行相应的改变
+			  allday=29;
+			  else 
+			  allday=28;}
+	  }
+	  //显示相应月份的天数
+	  function showday(){	  
+         showmonth()
+		    count();
+		  var fistdate=new Date(year,month-1,1);
+		  var xinqi=fistdate.getDay();
+		  var daterow=document.getElementById("day");
+		  for(var i=0;i<xinqi;i++)//循环输出天数
+		  {
+			  var dayElement=document.createElement("div");
+			    dayElement.className="evrday";
+			 daterow.appendChild(dayElement);
+		  }
+		  
+		  for(var j=1;j<=allday;j++)
+		  {	
+			  var dayElement=document.createElement("div");
+			   dayElement.innerHTML=j;
+			    dayElement.className="evrday";
+				if(j==day&&month==today.getMonth()+1&&year==today.getFullYear())//当前日，标红
+				{
+					//dayElement.style.color="red";
+					dayElement.innerHTML="ฅʕ•ᴥ•ʔ";
+					//alert(Math.floor((fistdate.getTime()/1000/60/60/24)+j));
+				}
+				//set bg
+				var tt=Math.floor((fistdate.getTime()/1000/60/60/24)+j)%8;
+				
+				if(tt==0||tt==7)//中
+				{
+					dayElement.style.backgroundImage="url(3.png)";
+				}
+				else if(tt==2||tt==3)//晚
+				{
+					dayElement.style.backgroundImage="url(1.png)";
+				}
+				else if(tt==5||tt==6)//早
+				{
+					dayElement.style.backgroundImage="url(2.png)";
+				}
+				else//休
+				{
+					dayElement.style.backgroundImage="url(0.png)";
+				}
+				daterow.appendChild(dayElement);
+		  }
+		  //alert((allday+xinqi+7)%7);
+		  for(var t=0;t<7-(allday+xinqi+7)%7;t++)
+		  {
+			var dayElement=document.createElement("div");
+			    dayElement.className="evrday";
+			 daterow.appendChild(dayElement);
+		  }
+	  }
+	   //点击下个月
+	    function next(){
+           document.getElementById("day").innerHTML ="";
+          if(month<12)
+		    {  month=month+1;
+		    }
+		      else
+		       {  month=1;
+		         year=year+1; 
+		     }
+		        document.getElementById('day').innerHTML ="";    
+		        showday();
+		}
+        //点击上个月
+		function shang(){
+           document.getElementById('day').innerHTML ="";
+          if(month>1)
+		      {month=month-1;
+		      }
+		      else
+		      {
+		         month=12;
+		         year=year-1; 
+		     }
+		        document.getElementById('day').innerHTML ="";    
+		        showday();
+		}
+
+	 
+	  </script>
+</body>
+</html>
