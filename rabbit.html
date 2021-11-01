@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+	<title>rabbit</title>
+</head>
+<body>
+	<style>
+	body{
+	border:0px;
+	padding:0px;
+	margin:0px;
+	background-color:#001500;
+	color:#00ff00;
+	font-size:14px;
+	font-family:"Droid Sans","微软雅黑"
+	}
+	.textareacss{
+	border:0px;
+	padding:0px;
+	margin:0px;
+	width:100%;
+	min-height:500px;
+	background-color:#001500;
+	color:#00ff00;
+	outline:none;
+	
+	}
+	.btn{
+	background-color:#003300;
+	text-align:center;
+	width:200px;
+	height:30px;
+	line-height:30px;
+	margin:auto;
+	}
+	
+	</style>
+    <script>
+	var splitstr="z"
+	function encrypt2(v)
+	{
+        res="";
+		for(i=0;i<v.length;i++)
+		{
+			res+=v.charCodeAt(i).toString(36)+splitstr;
+		}
+		return res;
+	};
+	function decrypt2(v)
+	{
+		res="";
+
+		arr=v.split(splitstr);
+		for(i=0;i<arr.length-1;i++)
+		{
+			res+=String.fromCharCode(parseInt(arr[i],36));
+		}
+		return res;
+	}
+	function onclickbtn()
+	{
+		//document.getElementById("textarea1").value=encrypt2(document.getElementById("textarea1").value);
+		var v=document.getElementById("textarea1").value;
+		var t=v.substring(v.length-3);
+		if(t=="h36")
+		{
+			v2=v.substring(0,v.length-1);
+			document.getElementById("textarea1").value=decrypt2(v2);
+		}else
+		{
+			document.getElementById("textarea1").value=encrypt2(v);
+		}
+	}
+
+	</script>
+	<br/>
+	<div style="margin:auto;max-width:600px;" ><textarea id="textarea1" class="textareacss" >follow the white rabbit ...</textarea></div>
+	<div class="btn" onclick="onclickbtn()">UP/DOWNLOAD</div>
+
+</body>
+</html>
