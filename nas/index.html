@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <title>电影瓣瓣</title>
+        <style type="text/css">
+        *{
+            font-family:inherit,"Droid Sans","微软雅黑", serif;
+        }
+        body{
+            background-color:#cacaca;
+            text-align: center;
+            vertical-align: top;
+        }
+        div{
+            margin:0px;
+            padding:0px;
+            border:0px;
+        }
+        a{
+            text-decoration: none;
+            color: #111111;
+        }
+        .urlItem{
+            /*class*/
+            width: 300px;
+            height: 80px;
+            /*line-height:40px;*/
+            /*float:left;*/
+            display: inline-block;
+            background-color:#9ec6c7;
+            color: #394251;
+            padding:10px;
+            margin: 5px;
+            vertical-align: top;
+            text-align: left;
+            overflow: hidden;
+        }
+        .urlitempolt
+        {
+            color: #4c4c4c;
+        }
+        .iconImg{
+            width:80px;
+            height:80px;
+            margin-right: 10px;
+            margin-bottom: 2px;
+            float:left;
+        }
+        #calendar{
+            /*id*/
+            width:385px;
+            }
+        </style>
+        <script>
+            mainurl="http://192.168.193.27:"
+            //HEX: #e4d1d1 #b9b0b0 #d9ecd0 #77a8a8 #f0efef #ddeedd #c2d4dd #b0aac0
+            colorbox=["#f5cec7","#e79796","#ffc988","#ff8284","#c6c09c"];
+            arr=[
+                //["0网址","1标题","2简介","颜色","4图标url（可选）"],
+                [mainurl+"8096","Jellyfin影音中心","家庭影院和IPVT","#6b5b95","defaultIcon.png"],
+                ["https://hotine.wang/dybb/","电影伴伴","最新电影下载清单","#b2ad7f","defaultIcon.png"],
+                [mainurl+"2345","远程迅雷","迅雷网页版","#80ced6","defaultIcon.png"],
+                [mainurl+"6080","百度云盘","百度云盘网页版","#92a8d1","defaultIcon.png"],
+                [mainurl+"2038","文件管理器","FileBrowser","#cab577","defaultIcon.png"],
+                [mainurl+"9000","Docker","Docker管理中心","#87bdd8","defaultIcon.png"],
+                [mainurl,"OMV管理","OpenMediaVault后台管理","#cfe0e8","defaultIcon.png"],
+            ]
+            htmlTemp='';
+            function init()
+            {
+                htmladd="";
+                cc=0;
+                htmlDiv=document.getElementById("itemTemp");//目标div
+                htmlTemp=htmlDiv.innerHTML;//链接模块html模板
+                alert(htmlTemp);
+                for(var i=0;i<arr.length;i++)
+                {
+                    var str=htmlTemp;
+                    str=str.replace("#链接#",arr[i][0]);
+                    str=str.replace("#标题#",arr[i][1]);
+                    str=str.replace("#介绍#",arr[i][2]);
+                    str=str.replace("#颜色#",colorbox[cc]);cc=(cc+1)%colorbox.length;
+                    str=str.replace("#图标#",arr[i][4]);
+                    htmladd+=str;
+                }
+                htmlDiv.outerHTML=htmladd;
+            }
+        </script>
+    </head>
+    <body onLoad="init()">
+        <div class="urlItem" style="background-color:#d9d9c2;text-align: center;vertical-align: center;">
+            <span style="font-size:40px; color:rgb(172, 125, 49)">Hotine远程NAS</span><br />
+            <span class="urlitempolt">自家NAS公网使用</span>
+        </div>
+        <!---模板片段开始-->
+        <div id ="itemTemp" >
+            <a class="itemTemp"  href="#链接#">
+                <div id="template" class="urlItem" style="background-color:#颜色#;" >
+                    <img class="iconImg" src="#图标#" alt="" onerror="this.style.display='none'" />
+                    <span><big><big><b>#标题#</b></big></big></span><br />
+                    <span class="urlitempolt">#介绍#</span>
+                </div>
+            </a>
+        </div>
+        <!---模板片段结束-->
+        <div class="urlItem" style="text-align: center;vertical-align: center;background-color: #e0e2e4;">
+            <span style="font-size:40px; color:rgb(79, 100, 106)">没有啦...</span>
+            
+        </div>
+    </body>
+</html>
