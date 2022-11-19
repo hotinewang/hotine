@@ -59,13 +59,13 @@
             colorbox=["#f5cec7","#e79796","#ffc988","#ff8284","#c6c09c"];
             arr=[
                 //["0网址","1标题","2简介","颜色","4图标url（可选）"],
-                [mainurl+"8096","Jellyfin影音中心","家庭影院和IPVT","#6b5b95","defaultIcon.png"],
-                ["https://hotine.wang/dybb/","电影伴伴","最新电影下载清单","#b2ad7f","defaultIcon.png"],
-                [mainurl+"2345","远程迅雷","迅雷网页版","#80ced6","defaultIcon.png"],
-                [mainurl+"6080","百度云盘","百度云盘网页版","#92a8d1","defaultIcon.png"],
-                [mainurl+"2038","文件管理器","FileBrowser","#cab577","defaultIcon.png"],
-                [mainurl+"9000","Docker","Docker管理中心","#87bdd8","defaultIcon.png"],
-                [mainurl,"OMV管理","OpenMediaVault后台管理","#cfe0e8","defaultIcon.png"],
+                [mainurl+"8096","Jellyfin影音中心","家庭影院和IPVT","#6b5b95","icon/Jellyfin_A.png"],
+                ["https://hotine.wang/dybb/","电影伴伴","最新电影下载清单","#b2ad7f","icon/Chrome.png"],
+                [mainurl+"2345","远程迅雷","迅雷网页版","#80ced6","icon/Xunlei_A.png"],
+                [mainurl+"6080","百度云盘","百度云盘网页版","#92a8d1","icon/BaiduNetdisk.png"],
+                [mainurl+"2038","文件管理器","FileBrowser","#cab577","icon/FileBrowser.png"],
+                [mainurl+"9000","Docker","Docker管理中心","#87bdd8","icon/Docker.png"],
+                [mainurl,"OMV管理","OpenMediaVault后台管理","#cfe0e8","icon/HA_A.png"],
             ]
             htmlTemp='';
             function init()
@@ -78,6 +78,7 @@
                 for(var i=0;i<arr.length;i++)
                 {
                     var str=htmlTemp;
+                    str=str.replace("/*onerror*/","this.style.display='none'")
                     str=str.replace("#链接#",arr[i][0]);
                     str=str.replace("#标题#",arr[i][1]);
                     str=str.replace("#介绍#",arr[i][2]);
@@ -96,9 +97,9 @@
         </div>
         <!---模板片段开始-->
         <div id ="itemTemp" >
-            <a class="itemTemp"  href="#链接#">
+            <a class="itemTempA"  target="_blank"   href="#链接#">
                 <div id="template" class="urlItem" style="background-color:#颜色#;" >
-                    <img class="iconImg" src="#图标#" alt="" onerror="this.style.display='none'" />
+                    <img class="iconImg" src="#图标#" alt="" onerror="/*onerror*/" />
                     <span><big><big><big><b>#标题#</b></big></big></big></span><br />
                     <span class="urlitempolt">#介绍#</span>
                 </div>
