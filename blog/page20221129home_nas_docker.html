@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>家庭NAS搭建2-DOCK常用容器安装</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Hotine.Wang</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">主页</a></li>
+							<li><a href="page20221129home_nas.html">家庭NAS搭建1-OMV系统安装</a></li>
+							<li class="active"><a href="page20221129home_nas_docker.html">家庭NAS搭建2-DOCK常用容器安装</a></li>
+						</ul>
+						<!--ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">2022年11月29日</span>
+									<h1>超低成本私有NAS<br />常用DOCKER容器安装</h1>
+									<p>
+										花最少的钱，整最嗨的活！
+									</p>
+								</header>
+								<div class="image main"><img src="images/20221129home_nas/cover-docker.jpg" alt="" /></div>
+								<span style="word-wrap:break-word">
+									<h2>容器清单：</h2>
+									<ul>
+										<li><b>SSH控制台：</b>必备神器，可以通过网页操作主机控制台，这样就不用下载SHH软件了</li>
+										<li><b>文件管理器：</b>主机上的文件，可以通过文件管理器进行管理，复制、粘贴、下载...</li>
+										<li><b>Heidmall导航页：</b>NAS上的网址收藏夹,再也不怕忘记容器的网址了</li>
+										<li><b>jellyfin：</b>打造家庭媒体中心，电脑、手机打开就能看电影</li>
+										<li><b>迅雷</b>下载神器不用多说</li>
+										<li><b>百度网盘</b>网盘文件挂机下载</li>
+										<li><b>Transmission和qBittorent</b>bt下载器</li>
+										<li><b>Zerotier</b>内网穿透神器，出门在外，也可访问家庭NAS</li>
+										<li><b>还有什么</b>想起来再增加...</li>
+									</ul>
+									<hr />
+
+									<!--div>
+										<h2>标题</h2>
+										描述等
+										<blockquote>docker run -d</blockquote>
+									</div-->
+
+									<div>
+										<h2>SSH控制台：</h2>
+										直接在NAS主机的控制台界面输入以下命令等待安装完成即可。
+										<blockquote>docker run -d --net=host --log-driver json-file --log-opt max-file=1 --log-opt max-size=100m --restart always --name webssh -e TZ=Asia/Shanghai -e savePass=true jrohy/webssh</blockquote>
+										--name 后边的webssh是容器名称，可以自己修改<br />
+										本容器默认端口号为5032<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:5032
+										输入NAS主机IP地址，SSH端口号（默认是22），控制台用户名，密码连接即可。后续安装docker容器，可以把命令直接复制到本网页中执行。
+										至此，以后可以通过网页操控主机了，主机上的显示器可以拔掉了。
+										当然，你不装这个容器也可以，下载一个ssh管理软件，比如FinalShell也可以管理控制台，只是需要安装软件，而且换一个设备还得再安装，比较麻烦。
+									</div>
+
+									<div>
+										<h2>文件管理器：</h2>
+										在NAS主机的SSH控制台界面输入以下命令等待安装完成即可。
+										<blockquote>docker run -d --name filebrowser -v /:/srv -v   /opt/filebrowser/filebrowserconfig.json:/etc/config.json -v /opt/filebrowser/database.db:/etc/database.db -p 2038:80 filebrowser/filebrowser
+										</blockquote>
+										-v /:/srv是指文件管理器中的根目录设定为系统盘的根目录（前边的那个/代表系统盘根目录）<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:2038<br />
+										默认用户名/密码：admin/admin<br />
+										登录后：settings->设置中文&修改密码
+									</div>
+
+								</span>			
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<!--footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer-->
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
