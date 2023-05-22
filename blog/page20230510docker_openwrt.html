@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>NAS作为旁路由：docker中open-wrt配置</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Hotine.Wang</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">主页</a></li>
+							<li class="active"><a href="#">NAS作为旁路由：docker中open-wrt配置</a></li>
+							<li><a href="page20221129home_nas.html">家庭NAS搭建1-OMV系统安装</a></li>
+							<li><a href="page20230510linux_server.html">LINUX服务器部署与折腾</a></li>
+						</ul>
+						<!--ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">2023年5月10日</span>
+									<h1>NAS作为旁路由<br />docker中open-wrt配置</h1>
+									<p>
+										用NAS实现旁路由的魔法功能。
+									</p>
+								</header>
+								
+								<span style="word-wrap:break-word">
+									
+
+									<!--div>
+										<h2>标题</h2>
+										描述等
+										<blockquote>docker run -d</blockquote>
+									</div-->
+
+									<div>
+										<h2>安装流程：</h2>
+										用SSH工具连接服务器,需要先查看是否打开了网卡的混杂模式。<br />
+										查看网卡是否打开混杂模式（使用以下两个命令都可以）
+										<blockquote>
+											ip addr<br />
+											ifconfig
+										</blockquote>
+										会显示类似于下边的信息：<br />
+										<blockquote>
+										1: lo: .LOOPBACK,UP,LOWER_UP. mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000<br />
+											link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00<br />
+											inet 127.0.0.1/8 scope host lo<br />
+											   valid_lft forever preferred_lft forever<br />
+											inet6 ::1/128 scope host <br />
+											   valid_lft forever preferred_lft forever<br />
+										2: enp1s0: .BROADCAST,MULTICAST,PROMISC,UP,LOWER_UP. mtu 1500 qdisc pfifo_fast state UP group default qlen 1000<br />
+											link/ether 68:1d:ef:16:9d:16 brd ff:ff:ff:ff:ff:ff<br />
+											inet 192.168.31.74/24 brd 192.168.31.255 scope global dynamic enp1s0<br />
+											   valid_lft 33867sec preferred_lft 33867sec<br />
+											inet6 fe80::6a1d:efff:fe16:9d16/64 scope link <br />
+											   valid_lft forever preferred_lft forever<br />
+										</blockquote>
+										找到ip和主机地址一致的那个网卡，例如enp1s0，看后边有没有PROMISC字样，没有就是没开启的意思，使用以下命令开启混杂模式：<br />
+										<blockquote>sudo ip link set enp1s0 promisc on</blockquote>
+										然后再通过ip addr或者ifconfig命令检查是否开启。<br />
+										创建docker网卡<br />
+										<blockquote>docker network create -d macvlan --subnet=192.168.31.0/24 --gateway=192.168.31.1 -o parent=enp1s0 macnet</blockquote>
+										其中--subnet=192.168.31.0/24是网段和子网掩码，--gateway=192.168.31.1是网关（一般是路由器管理页面的ip地址）<br />
+										可以用以下命令查看是否创建成功：<br />
+										<blockquote>docker network list</blockquote>
+										查看自己系统的架构<br />
+										<blockquote>uname -a</blockquote>
+										安装dock镜像，项目地址：https://hub.docker.com/r/sulinggg/openwrt，从网址中找到对应自己系统架构的镜像名称(dockerhub或阿里云镜像仓库 (上海))。并安装对应的镜像：	<br />
+										<blockquote>docker run --restart always --name openwrt -d --network macnet --privileged registry.cn-shanghai.aliyuncs.com/suling/openwrt:x86_64  /sbin/init	</blockquote>
+										上述命令中，--name openwrt是指镜像名称，可修改；--network macnet中的macnet就是对应的新建网卡名称；registry.cn-shanghai.aliyuncs.com/suling/openwrt:x86_64是要安装镜像名称，用dockerhub或阿里云镜像仓库 (上海)都可以。<br />
+										安装完毕后，开始设置openwrt的ip。进入portainer管理界面，在容器列表里找到openwrt，点击QuickAction列表下的>_，在下一个页面点击连接，进入命令行模式,输入:<br />
+										<blockquote>vim /etc/config/network</blockquote>
+										修改以下部分<br />
+										<blockquote>
+											option ipaddr '192.168.123.100'<br />
+											option gateway '192.168.123.1'<br />
+											option dns '192.168.123.1'<br />
+										</blockquote>
+										为：<br />
+										<blockquote>
+											option ipaddr '192.168.31.5'<br />
+											option gateway '192.168.31.1'<br />
+											option dns '192.168.31.1'<br />	
+										</blockquote>
+										按i进入编辑模式，修改完以后按esc退出，输入以下命令保存<br />
+										<blockquote>:wq</blockquote>
+										重启网络:<br />
+										<blockquote>/etc/init.d/network restart</blockquote>
+										随后访问http://192.168.31.5/即可进入openwrt界面，默认密码是：root或者password或者随便输一个也能进入。先修改密码。<br />
+										设置openwrt：<br />
+										网络-接口-LAN-修改，在基本设置里：把“使用自定义的DNS”清空，基本设置里勾选“忽略此接口”，IPv6设置里，全部禁用，之后保存应用。之后切到物理设置：取消勾选“桥接接口”。<br />
+										网络-防火墙-自定义规则，在最后添加一行代码：<br />
+										<blockquote>iptables -t nat -I POSTROUTING -j MASQUERADE</blockquote>
+										网络-Turbo ACC 网络加速设置：勾选“DNS缓存”，保存并应用。<br />
+										到此，整个docker运行openWRT的过程就结束了。<br />
+										<br />
+										<br />
+										<h2>如何使用胖路由：</h2><br />
+										<b>方案1：</b>修改主路由器设置（局域网内全部设备均通过旁路由）<br />
+										进入路由器后台中，将主路由的 DHCP 的默认网关和 DNS 服务器设置为openWRT的 IP。完成以上操作后，断开设备（如手机，电脑）与路由器的连接，重新连接路由器。<br />
+										<b>方案2：</b>修改联网设备设置（特定联网设备通过旁路由）<br />
+										以安卓机为例，将IP设置修改为“静态”，IP地址填写一个未被占用的IP，前缀长度填24，DNS1填写openwrt的ip，例如上文中的192.168.31.5。保存，断开网络再重新联网即可。<br />
+										参考文献：https://mlapp.cn/376.html<br />
+										<br />
+										<br />
+										<br />
+								
+									</div>
+									<hr />
+
+									
+									
+								</span>			
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<!--footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer-->
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

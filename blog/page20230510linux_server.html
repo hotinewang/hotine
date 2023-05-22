@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>LINUX服务器部署与折腾</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Hotine.Wang</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">主页</a></li>
+							<li class="active"><a href="#">LINUX服务器部署与折腾</a></li>
+						</ul>
+						<!--ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">2023年5月10日</span>
+									<h1>LINUX服务器部署与折腾</h1>
+									<p>
+										使用linux服务器，可实现NODE-JS爬虫、建站、DOCKER安装、魔法上网等功能。
+									</p>
+								</header>
+								
+								<span style="word-wrap:break-word">
+									
+
+									<!--div>
+										<h2>标题</h2>
+										描述等
+										<blockquote>docker run -d</blockquote>
+									</div-->
+
+									<div>
+										<h2>部署流程：</h2>
+										本流程在搬瓦工虚拟主机上测试通过。系统为Ubuntu<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>NODEJS部署（直接安装）</h2>
+										先在服务器上下载nodejs包<br />
+										先进入usr/local目录：<br />
+										<blockquote>#cd /usr/local</blockquote>
+										在nodejs.org官网找到nodejs的linux LTS（长期支持）版本下载地址，并复制，在终端输入<br />
+										<blockquote>wget https://nodejs.org/dist/nodejsxxxxxxx.tar.xz</blockquote>
+										解压tar文件:<br />
+										<blockquote>tar -xvf nodejsxxxxxxx.tar.zx</blockquote>
+										修改目录名称为node<br />
+										<blockquote>mv /usr/local/nodejsxxxxxxx /usr/local/node</blockquote>
+										可以尝试查看nodejs版本号确定是否能正常运行<br />
+										<blockquote>/usr/local/node/bin/node -v<br />
+											回显：V版本号</blockquote>
+										配置环境变量<br />
+										向/etc/profile文件中写入nodejs模块所在目录路径<br />
+										<blockquote>
+											cat >> /etc/profile >>EOF <br />
+											export PATH=$PATH:/usr/local/node/bin
+										</blockquote>
+										也可以用SSH工具把/etc/profile文件下载到电脑桌面，用记事本在最后一行加入下面的内容然后再上传回去覆盖原文件：<br />
+										<blockquote>
+											export PATH=$PATH:/usr/local/node/bin
+										</blockquote>
+										最后执行source命令让配置生效<br />
+										<blockquote>source /etc/profile</blockquote>
+										配软连接，相当于全局变量<br />
+										<blockquote>
+											ln -s /usr/local/node/bin/node /usr/local/bin/<br />
+											ln -s /usr/local/node/bin/npm /usr/local/bin/
+										</blockquote>
+										然后在控制台输入以下两个命令，测试是否配置nodejs成功。配置成功的话会回显版本号<br />
+										<blockquote>
+											node -v<br />
+											npm -v
+										</blockquote>
+										
+									</div>
+									<hr />
+
+									<div>
+										<h2>NODEJS部署（通过docker安装）</h2>
+										本流程在搬瓦工虚拟主机上测试通过。系统为Ubuntu<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>通过NODEJS搭建静态网站</h2>
+										本流程在搬瓦工虚拟主机上测试通过。系统为Ubuntu<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>DOCKER安装</h2>
+										本流程在搬瓦工虚拟主机上测试通过。系统为Ubuntu<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>魔法上网V2RAY</h2>
+										本流程在搬瓦工虚拟主机上测试通过。系统为Ubuntu<br />
+									</div>
+									<hr />
+
+
+
+
+									
+									
+								</span>			
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<!--footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer-->
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
