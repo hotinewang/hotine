@@ -12,6 +12,27 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
+	<script language="javascript" type="text/javascript">
+        //在这里进行网页跳转控制
+		var links=[
+			["ai.hotine.wang","vps.hotine.wang:3002"],
+			["blog.hotine.wang","hotine.wang/blog"],
+			["nas.hotine.wang","hotine.wang/nas"],
+			["movie.hotine.wang","vps.hotine.wang/dybb/"],
+			//在这里添加更多...
+			["-","-"]
+		];
+		var host=window.location.host;
+		for(i=0;i<links.length;i++)
+		{
+			alert("host"+host+"|对比："+i+"-"+links[i][0]);
+			if(links[i][0]==host)
+			{
+				window.location.host=links[i][1];
+			}
+			
+		}
+    </script>
 	<body class="is-preload">
 
 		<!-- Page Wrapper -->
