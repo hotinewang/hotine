@@ -5,9 +5,28 @@
         <title>HotineStudio</title>
     </head>
     <script language="javascript" type="text/javascript">
-        
+        var links=[
+			["ai.hotine.wang","vps.hotine.wang:3002"],
+			["blog.hotine.wang","hotine.wang/blog"],
+			["nas.hotine.wang","hotine.wang/nas"],
+			["movie.hotine.wang","vps.hotine.wang/dybb/"],
+			//在这里添加更多...
+			["-","-"]
+		];
+		var host=window.location.host;
+        var host_to="hotine.wang";
+		for(i=0;i<links.length;i++)
+		{
+			if(links[i][0]==host)
+			{
+				host_to=links[i][1];
+                break;
+			}
+			
+		}
+        window.location.host=host_to;
     </script>
-    <body onload="window.location.href='http://hotine.wang'">
+    <body >
         跳转中，请稍后...<br />
         手动跳转点<a href="http://hotine.wang" >此处</a>
     </body>
