@@ -68,7 +68,7 @@
 										<h2>NODEJS部署（直接安装）</h2>
 										先在服务器上下载nodejs包<br />
 										先进入usr/local目录：<br />
-										<blockquote>#cd /usr/local</blockquote>
+										<blockquote>cd /usr/local</blockquote>
 										在nodejs.org官网找到nodejs的linux LTS（长期支持）版本下载地址，并复制，在终端输入<br />
 										<blockquote>wget https://nodejs.org/dist/nodejsxxxxxxx.tar.xz</blockquote>
 										解压tar文件:<br />
@@ -106,16 +106,16 @@
 
 									<div>
 										<h2>NODEJS部署（通过docker安装）</h2>
-										先参考下面的DOCK安装教程安装docker<br />
-										通过NODEJS镜像建立容器,命名为nodebasic并运行容器中的bash（linux的shell）<br />
+										先参考下面的DOCK安装教程安装docker。<br />
+										docker安装好以后，通过NODEJS镜像建立容器,命名为nodebasic并运行容器中的bash（linux的shell）<br />
 										<blockquote>docker run --name nodebasic -i -t node /bin/bash</blockquote>
 										在容器中安装pm2（进程管理器）和cnpm（国内镜像的npm）
 										<blockquote>
-											npm install pm2 -g    全局安装pm2<br />
-											pm2 -v    打印版本号（测试是否安装成功）<br />
+											npm install pm2 -g    ##全局安装pm2<br />
+											pm2 -v    ##打印版本号（测试是否安装成功）<br />
 											npm install cnpm -g --registry=https://registry.npm.taobao.org<br />
-											npm -v   测试是否安装成功<br />
-											exit    退出容器
+											npm -v   ##测试是否安装成功<br />
+											exit    ##退出容器
 										</blockquote>
 										然后把这个配置好的容器再打包成镜像，方便后续使用<br />
 										查找nodebasic容器的id
@@ -151,9 +151,10 @@
 											-v /path/to/your/code/:/var/node/code/ \   绑定代码路径<br />
 											-v /path/to/your/logs/:/root/.pm2/logs/ \   绑定pm2的日志路径<br />
 											-w /var/node/code/ \   直接定位到容器中指定路径<br />
-											hotine/mynode   镜像名
+											hotine/mynode   \   镜像名<br />
+											pm2 start app.js  在上文指定路径中运行app.js文件。也可以是其他文件，这个js文件是自己编写的node主程序。
 										</blockquote>
-										pm2 start app.js  在上文指定路径中运行app.js文件。也可以是其他文件，这个js文件是自己编写的node主程序。
+										（输入命令时需要删除\后的中文注释）
 									</div>
 									<hr />
 
@@ -168,6 +169,7 @@
 											// 上面的写法等同于↓<br />
 											app.use(express.static("./"));<br />
 											const port = 8080;<br />
+											//端口8080可根据实际情况修改<br />
 											app.listen(port, () => console.log(`网站服务器启动，访问端口${port}`));<br />
 										</blockquote>
 										通过cd命令定位到网站目录，例如：cd /path/to/code/,然后在控制台运行:
@@ -216,6 +218,12 @@
 										<blockquote>v2ray --help     ##查看使用说明</blockquote>
 										生成Vmess链接<br />
 										<blockquote>v2ray qr    ##生成 V2Ray 配置二维码链接</blockquote> 
+									</div>
+
+									<div>
+										<h2>其他</h2>
+										因为安装好了DOCKER，所以可以安装很多Docker容器，详见：<br />
+										<a href="/page20221129home_nas_docker.html">家庭NAS搭建2:DOCK常用容器安装</a>
 									</div>
 									<hr />
 

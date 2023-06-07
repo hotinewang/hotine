@@ -61,6 +61,7 @@
 	<div>
 		<h2>准备U盘openWRT系统</h2>
 		使用前需确保N1盒子是原版系统降级刷机后的，如果不是，需要网络搜索N1原版系统刷机教程先进行降级。<br />
+		降级之后，开始以下操作：<br />
 		下载恩山论坛（https://www.right.com.cn/）F大的N1固件：
 		<blockquote>
 			链接：https://pan.baidu.com/s/1BIjHHfi90Oa7Le91Q8gkOg<br />
@@ -201,8 +202,8 @@
 
 	<div>
 		<h2>挂载移动设备并SMB网络共享</h2>
-		把移动设备接入N1的USB接口。在？？？？？查看设备是否被识别，并记录挂载位置，例如/mnt/sda1<br />
-		之后打开？？？？网络共享<br />
+		把移动设备接入N1的USB接口。在 系统-挂载点 查看设备是否被识别，并记录挂载位置，例如/mnt/sda1<br />
+		之后打开左侧菜单中的 网络共享<br />
 		先把模板里的<br />
 		<blockquote>
 			## set invalid users<br />
@@ -215,13 +216,14 @@
 		</blockquote>
 		保存并应用。<br />
 		之后添加挂载点。<br />
-		添加完成后需要在服务中，找到samba协议，并重启。<br /><br />
-		故障排除：<br />
+		添加完成后需要在 系统-启动项 中，找到samba协议，并重启。<br /><br /><br />
+		<b>故障排除：</b><br />
 		如果电脑映射驱动时提示拒绝访问，可以进入控制台查看smb配置文件是否正确：<br />
-		使用 系统-TTYD 终端或者SSH工具连接盒子（用户名密码和后台管理的用户名密码相同）查看。
+		使用 系统-TTYD 终端或者SSH工具连接盒子（用户名密码和后台管理的用户名密码相同）查看。<br />
 		<blockquote>
-			vi /etc/
+			vi /etc/samba/smb.conf
 		</blockquote>
+		如果挂载设备后电脑查询不到，则需要在 系统-服务 中重启samba服务
 <br />
 	</div>
 	<hr />
