@@ -166,12 +166,13 @@ div{
 			if(td%56==26||td%56==25)
 			{
 				dayElement.style.color="#00B51D";
+				dayElement.style.backgroundColor="#c4f0cd";
 			}
 			
 			//当前日子特殊标记
 			if(j==day&&month==today.getMonth()+1&&year==today.getFullYear())//当前日，标红
 			{
-				//dayElement.style.color="red";
+				dayElement.style.backgroundColor="#f7c6c6";
 				dayElement.innerHTML="ฅʕ•ᴥ•ʔ";
 					//alert(Math.floor((fistdate.getTime()/1000/60/60/24)+j));
 			}
