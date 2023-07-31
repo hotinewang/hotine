@@ -101,78 +101,101 @@ div{
     <div id="day"  ></div>
 </div>
  <script> 		
-   var today=new Date();//获取当前时间
-	  var year=today.getFullYear();//获取当前的年份
-	  var month=today.getMonth()+1;//获取当前月
-	  var day=today.getDate();//获取当前月
-	  var allday=0;
-	  function showmonth()
-	  {
-	    var year_month=year+"年"+month+"月";
-	        document.getElementById("month").innerHTML=year_month;//显示当前的年月日
-	  }
+	var today=new Date();//获取当前时间
+	var year=today.getFullYear();//获取当前的年份
+	var month=today.getMonth()+1;//获取当前月
+	var day=today.getDate();//获取当前日
+	var allday=0;
+	function showmonth()
+	{
+	var year_month=year+"年"+month+"月";
+		document.getElementById("month").innerHTML=year_month;//显示当前的年月日
+	}
+
+	//转换js时间戳到Excel时间戳（chatGPT生成）
+	function dateToExcelTimestamp(date) 
+	{
+		const excelEpoch = new Date('1900-01-01'); // Excel的日期起始时间
+		const timeDiff = date - excelEpoch; // 计算Date对象与Excel起始时间的时间差（毫秒）
+		// 计算Excel时间戳（Excel的时间戳为自Excel起始时间以来的天数，精确到小数点后面的时间）
+		const excelTimestamp = timeDiff / (1000 * 60 * 60 * 24);
+		return excelTimestamp;
+	}
 	
+	  //计算某月的天数
 	  function count()
 	  {
 		  if(month!=2)
 		  {
-		  if(month==4||month==6||month==9||month==11)//判断是否是相同天数的几个月，二月除外
+		    if(month==4||month==6||month==9||month==11)//判断是否是相同天数的几个月，二月除外
 		     allday=30;
-			 else
+			else
 			 allday=31;
 		  }
 		  else
 		  {
-			  if((year%4==0&&year%100!=0)||(year%400==0))//判断是否是闰年，进行相应的改变
+			if((year%4==0&&year%100!=0)||(year%400==0))//判断是否是闰年，进行相应的改变
 			  allday=29;
-			  else 
-			  allday=28;}
+			else 
+			  allday=28;
+		  }
 	  }
 	  //显示相应月份的天数
-	  function showday(){	  
-         showmonth()
-		    count();
-		  var fistdate=new Date(year,month-1,1);
-		  var xinqi=fistdate.getDay();
-		  var daterow=document.getElementById("day");
-		  for(var i=0;i<xinqi;i++)//循环输出天数
-		  {
-			  var dayElement=document.createElement("div");
-			    dayElement.className="evrday";
-			 daterow.appendChild(dayElement);
-		  }
-		  
-		  for(var j=1;j<=allday;j++)
-		  {	
-			  var dayElement=document.createElement("div");
-			   dayElement.innerHTML=j;
-			    dayElement.className="evrday";
-				if(j==day&&month==today.getMonth()+1&&year==today.getFullYear())//当前日，标红
-				{
-					//dayElement.style.color="red";
-					dayElement.innerHTML="ฅʕ•ᴥ•ʔ";
+	  function showday()
+	  {
+		showmonth();
+		count();
+		var fistdate=new Date(year,month-1,1);
+		var xinqi=fistdate.getDay();
+		var daterow=document.getElementById("day");
+		for(var i=0;i<xinqi;i++)//循环输出天数
+		{
+			var dayElement=document.createElement("div");
+			dayElement.className="evrday";
+			daterow.appendChild(dayElement);
+		}
+		//alert(Date.parse( Date(year,month-1,day)));
+		for(var j=1;j<=allday;j++)
+		{	
+			var dayElement=document.createElement("div");
+			dayElement.innerHTML=j;
+			dayElement.className="evrday";
+
+			//双休周末特殊标记
+			td=Math.floor(dateToExcelTimestamp(Date.parse(new Date(year,month-1,j))));
+			if(td%56==26||td%56==25)
+			{
+				dayElement.style.color="#00B51D";
+			}
+			
+			//当前日子特殊标记
+			if(j==day&&month==today.getMonth()+1&&year==today.getFullYear())//当前日，标红
+			{
+				//dayElement.style.color="red";
+				dayElement.innerHTML="ฅʕ•ᴥ•ʔ";
 					//alert(Math.floor((fistdate.getTime()/1000/60/60/24)+j));
-				}
-				//set bg
-				var tt=Math.floor((fistdate.getTime()/1000/60/60/24)+j)%8;
-				
-				if(tt==0||tt==7)//中
-				{
-					dayElement.style.backgroundImage="url(3.png)";
-				}
-				else if(tt==2||tt==3)//晚
-				{
-					dayElement.style.backgroundImage="url(1.png)";
-				}
-				else if(tt==5||tt==6)//早
-				{
-					dayElement.style.backgroundImage="url(2.png)";
-				}
-				else//休
-				{
-					dayElement.style.backgroundImage="url(0.png)";
-				}
-				daterow.appendChild(dayElement);
+			}
+			//set bg
+			var tt=Math.floor((fistdate.getTime()/1000/60/60/24)+j)%8;
+			
+			if(tt==0||tt==7)//中
+			{
+				dayElement.style.backgroundImage="url(3.png)";
+			}
+			else if(tt==2||tt==3)//晚
+			{
+				dayElement.style.backgroundImage="url(1.png)";
+			}
+			else if(tt==5||tt==6)//早
+			{
+				dayElement.style.backgroundImage="url(2.png)";
+			}
+			else//休
+			{
+				dayElement.style.backgroundImage="url(0.png)";
+			}
+			
+			daterow.appendChild(dayElement);
 		  }
 		  //alert((allday+xinqi+7)%7);
 		  for(var t=0;t<(7-(allday+xinqi+7)%7)%7;t++)
@@ -186,7 +209,8 @@ div{
 	    function next(){
            document.getElementById("day").innerHTML ="";
           if(month<12)
-		    {  month=month+1;
+		    {  
+				month=month+1;
 		    }
 		      else
 		       {  month=1;
