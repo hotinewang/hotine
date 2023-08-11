@@ -216,8 +216,10 @@
 										协议默认TCP，其他默认就好。<br />
 										安装完毕后，使用以下命令查看信息<br />
 										<blockquote>v2ray --help     ##查看使用说明</blockquote>
-										生成Vmess链接<br />
-										<blockquote>v2ray qr    ##生成 V2Ray 配置二维码链接</blockquote> 
+										进入菜单：<br />
+										<blockquote>v2ray</blockquote> 
+										新建配置时，据说使用VMESS+WS+TLS比较安全或者VLESS+WS+TLS，不容易被封ip。该配置方案需要结合Caddy等网站服务使用。<br />
+										原理就是通过websocket https加密，把流量伪装成正常访问服务器上网站的流量。
 									</div>
 
 									<div>
