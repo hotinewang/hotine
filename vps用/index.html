@@ -1,37 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>HOTINE SPACE</title>
-    </head>
-    <script language="javascript" type="text/javascript">
-        var links=[
-			["nas.hotine.wang","https://blog.hotine.wang/nas"],
-			["movie.hotine.wang","http://hotine.wang/dybb/"],
-            ["pan.hotine.wang","http://hotine.wang:5244"],
-            ["mm.hotine.wang","https://blog.hotine.wang/rabbit/index.html"],
-            ["zhl.hotine.wang","https://blog.hotine.wang/r/index.html"],
-            ["qr.hotine.wang","https://blog.hotine.wang/r/index.html"],
-			//add more...
-			["-","-"]
-		];
-		var host=window.location.host;
-        var re_herf="https://blog.hotine.wang";
-		for(i=0;i<links.length;i++)
-		{
-			if(links[i][0]==host)
-			{
-                re_herf=links[i][1];
-                break;
-			}
-		}
-        
-        //window.location.href=re_herf;
-    </script>
-    <body >
-        <div style="color:rgb(19, 20, 19);margin: 0 auto;width:300px;text-align: center;font-size: 100pt;">
-            WHY R U HERE ?
-        </div>
-        
-    </body>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>WHY R U HERE ?</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        #video-background {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 100px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video-background" autoplay muted loop>
+            <source src="background-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div id="content">
+        <h1 style="font-size: 64px;">WHY R U HERE ?</h1>
+        <p style="font-size: 16px;">This is not where you should be...</p>
+    </div>
+</body>
 </html>
