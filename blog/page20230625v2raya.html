@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Linux安装V2RayA客户端</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Hotine.Wang</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">主页</a></li>
+							<li class="active"><a href="#">Linux安装V2RayA客户端</a></li>
+						</ul>
+						<!--ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">2023年6月25日</span>
+									<h1>Linux安装V2RayA客户端</h1>
+									<p>
+										好好学习，科学上网。
+									</p>
+								</header>
+								
+								<span style="word-wrap:break-word">
+									
+
+									<!--div>
+										<h2>标题</h2>
+										描述等
+										<blockquote>docker run -d</blockquote>
+									</div-->
+
+									<div>
+										
+										<ul>
+											<li>官网：<a href="https://v2raya.org/" >官网</a></li>
+											<li>GitHub：<a href="https://github.com/v2rayA/v2rayA" >v2rayA/v2rayA</a></li>
+											<li>官方文档Debian：<a href="https://v2raya.org/docs/prologue/installation/debian/" >Debian / Ubuntu安装</a></li>
+										</ul>
+										<hr />
+										<h2>安装流程：</h2>
+										根据官方文档安装就可以，很简单。<br />
+										v2rayA 的功能依赖于 V2Ray 内核，因此需要安装内核。<br />
+										<br />
+										<h2>安装 V2Ray 内核</h2>
+										安装v2rayA 提供的镜像脚本<br />
+										<blockquote>curl -Ls https://mirrors.v2raya.org/go.sh | sudo bash</blockquote>
+										安装后可以关掉服务，因为 v2rayA 不依赖于该 systemd 服务。<br />
+										<blockquote>sudo systemctl disable v2ray --now</blockquote>
+										<br />
+										<h2>通过软件源安装 v2rayA</h2>
+										添加公钥<br />
+										<blockquote>wget -qO - https://apt.v2raya.org/key/public-key.asc | sudo tee /etc/apt/trusted.gpg.d/v2raya.asc</blockquote>
+										添加 V2RayA 软件源，更新软件列表<br />
+										<blockquote>
+											echo "deb https://apt.v2raya.org/ v2raya main" | sudo tee /etc/apt/sources.list.d/v2raya.list<br />
+											sudo apt update
+										</blockquote>
+										安装 V2RayA<br />
+										<blockquote>sudo apt install v2raya</blockquote>
+										<br />
+										<h2>启动 v2rayA / 设置 v2rayA 自动启动</h2>
+										启动 v2rayA<br />
+										<blockquote>sudo systemctl start v2raya.service</blockquote>
+										设置开机自动启动<br />
+										<blockquote>sudo systemctl enable v2raya.service</blockquote>
+										最后，通过 http://localhost:2017 进入管理界面,添加节点并选择节点，点击左上方“就绪”使其变为“启用”。<br />
+										右上角设置里，改为“启用：大陆白名单模式”即可。<br />
+										<br />
+										
+
+
+									</div>
+									
+									
+								</span>			
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<!--footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer-->
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

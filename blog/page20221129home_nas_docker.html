@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>家庭NAS搭建2-DOCK常用容器安装</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Hotine.Wang</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">主页</a></li>
+							<li><a href="page20221129home_nas.html">家庭NAS搭建1-OMV系统安装</a></li>
+							<li class="active"><a href="page20221129home_nas_docker.html">家庭NAS搭建2-DOCK常用容器安装</a></li>
+						</ul>
+						<!--ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">2022年11月29日</span>
+									<h1>超低成本私有NAS<br />常用DOCKER容器安装</h1>
+									<p>
+										花最少的钱，整最嗨的活！
+									</p>
+								</header>
+								<div class="image main"><img src="images/20221129home_nas/cover-docker.jpg" alt="" /></div>
+								<span style="word-wrap:break-word">
+									<h2>容器清单：</h2>
+									<ul>
+										<li><b>SSH控制台：</b>必备神器，可以通过网页操作主机控制台，这样就不用下载SHH软件了</li>
+										<li><b>文件管理器：</b>主机上的文件，可以通过文件管理器进行管理，复制、粘贴、下载...</li>
+										<li><b>Heidmall导航页：</b>NAS上的网址收藏夹,再也不怕忘记容器的网址了</li>
+										<li><b>jellyfin：</b>打造家庭媒体中心，电脑、手机打开就能看电影</li>
+										<li><b>迅雷</b>下载神器不用多说</li>
+										<li><b>百度网盘</b>网盘文件挂机下载</li>
+										<li><b>Transmission和qBittorent</b>bt下载器</li>
+										<li><b>Zerotier</b>内网穿透神器，出门在外，也可访问家庭NAS</li>
+										<li><b>还有什么</b>想起来再增加...</li>
+									</ul>
+									<hr />
+
+									<!--div>
+										<h2>标题</h2>
+										描述等
+										<blockquote>docker run -d</blockquote>
+									</div-->
+
+									<div>
+										<h2>SSH控制台：</h2>
+										直接在NAS主机的控制台界面输入以下命令等待安装完成即可。
+										<blockquote>docker run -d --net=host --log-driver json-file --log-opt max-file=1 --log-opt max-size=100m --restart always --name webssh -e TZ=Asia/Shanghai -e savePass=true jrohy/webssh</blockquote>
+										--name 后边的webssh是容器名称，可以自己修改<br />
+										本容器默认端口号为5032<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:5032
+										输入NAS主机IP地址，SSH端口号（默认是22），控制台用户名，密码连接即可。后续安装docker容器，可以把命令直接复制到本网页中执行。
+										至此，以后可以通过网页操控主机了，主机上的显示器可以拔掉了。
+										当然，你不装这个容器也可以，下载一个ssh管理软件，比如FinalShell也可以管理控制台，只是需要安装软件，而且换一个设备还得再安装，比较麻烦。
+										<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>文件管理器：</h2>
+										在NAS主机的SSH控制台界面输入以下命令等待安装完成即可。
+										<blockquote>docker run -d --name filebrowser -v /:/srv -v   /opt/filebrowser/filebrowserconfig.json:/etc/config.json -v /opt/filebrowser/database.db:/etc/database.db -p 2038:80 filebrowser/filebrowser
+										</blockquote>
+										-v /:/srv是指文件管理器中的根目录设定为系统盘的根目录（前边的那个/代表系统盘根目录）<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:2038<br />
+										默认用户名/密码：admin/admin<br />
+										登录后：settings->设置中文&修改密码<br />
+									</div>
+									<hr />
+
+									<div>
+										<h2>Heidmall网页导航</h2>
+										NAS中安装的容器（app）太多，端口号不好记，因此可以通过一个网址导航来省去记端口的烦恼。
+										<blockquote>docker pull linuxserver/heimdall<br />
+											docker run -d --name=heimdall -p 8080:80 -p 8081:443 -v /opt/Heimdall/config:/config --restart unless-stopped   linuxserver/heimdall											
+										</blockquote>
+										--name 后边的webssh是容器名称，可以自己修改<br />
+										本容器默认端口号为8080<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:8080 输入NAS主机IP地址，SSH端口号（默认是22），控制台用户名，密码连接即可。后续安装docker容器，可以把命令直接复制到本网页中执行。 至此，以后可以通过网页操控主机了，主机上的显示器可以拔掉了。 当然，你不装这个容器也可以，下载一个ssh管理软件，比如FinalShell也可以管理控制台，只是需要安装软件，而且换一个设备还得再安装，比较麻烦。
+									</div>
+									<hr />
+									
+									<div>
+										<h2>jellyfin家庭影院</h2>
+										NAS中安装的容器（app）太多，端口号不好记，因此可以通过一个网址导航来省去记端口的烦恼。
+										<blockquote>
+											docker pull linuxserver/jellyfin<br />
+											docker run -d \<br />
+											--name=jellyfin \<br />
+											-e PUID=1000 \<br />
+											-e PGID=1000 \<br />
+											-e TZ=Asia/Shanghai \<br />
+											-p 8096:8096 \<br />
+											-p 8920:8920  \<br />
+											-v /opt/Jellyfin/config:/config \<br />
+											-v /media/usbHDD500G/movies/:/data \<br />
+											--restart unless-stopped \<br />
+											linuxserver/jellyfin<br />
+											<br />
+											++推荐用这个：<br />
+											docker run -d \<br />
+											--name=jellyfin \<br />
+											-e PUID=1000 \<br />
+											-e PGID=1000 \<br />
+											-e TZ=Asia/Shanghai \<br />
+											-p 8096:8096 \<br />
+											-p 8920:8920 `#optional` \<br />
+											-p 7359:7359/udp `#optional` \<br />
+											-p 1900:1900/udp `#optional` \<br />
+											-v /opt/jellyfin/config:/config \<br />
+											-v /srv/dev-disk-by-uuid-4293efca-7eac-4085-847b-fd5ffe8c91d7:/data/movies \<br />
+											-v /srv/dev-disk-by-uuid-4293efca-7eac-4085-847b-fd5ffe8c91d7:/data/tvshows `#optional` \<br /> \  <br />  
+											--restart unless-stopped \<br />
+											lscr.io/linuxserver/jellyfin:latest<br />
+										</blockquote>
+										之后在主机中用命令ls /dev/dri查看是否支持硬件加速（显示出目录即为支持）。    进入DOCKER管理界面，点击修改，再找到Runtime & Resources，在Devices中添加设备:   host和container都填写:/dev/dri在重新部署插件即可。<br />
+										添加媒体库时，路径选择是用DOCKER内的路径，例如data/movies，不是实际路径。<br />
+										进入http://192.168.31.56:8096设置
+
+									</div>
+									<hr />
+
+									<div>
+										<h2>远程迅雷</h2>
+										迅雷下载网页版，和PC版用起来差不多，每日支持添加3个下载连接，如果超过3个，可以使用迅雷手机app的远程下载功能添加下载。
+										<blockquote>
+											docker run -d --name=xunlei --hostname=mynas --net=host  -e XL_WEB_PORT=2345 -v /opt/xunlei/data:/xunlei/data -v /srv/dev-disk-by-uuid-00804d07-4136-4041-9a73-ddef75dcf9a4/downloads/xunlei:/xunlei/downloads --restart=unless-stopped --privileged cnk3x/xunlei:latest
+										</blockquote>
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:2345<br />
+										如需邀请码，输入：迅雷牛通<br />
+										*有时候可能出现下载存储位置异常，也就是说下载的内容没保存到挂载的文件夹内，而是存在了dock容器内部。此问题的解决方式详见下文“docker查看容器内部资源的方法”
+									</div>
+									<hr />
+
+									<div>
+										<h2>百度网盘</h2>
+										百度网盘资源的远程下载，可以登录会员，且能长期保持登录状态。
+										<blockquote>
+											docker pull johnshine/baidunetdisk-crossover-vnc:latest<br />
+											docker run -d -p 6080:6080 --name=BaiduNetDisk -v /srv/dev-disk-by-uuid-00804d07-4136-4041-9a73-ddef75dcf9a4/downloads:/home/baidu/baidunetdiskdownload/ johnshine/baidunetdisk-crossover-vnc:latest
+										</blockquote>
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:6080<br />
+										*有时候可能出现下载存储位置异常，也就是说下载的内容没保存到挂载的文件夹内，而是存在了dock容器内部。此问题的解决方式详见下文“docker查看容器内部资源的方法”
+									</div>
+									<hr />
+
+									<div>
+										<h2>BT下载之Transmission</h2>
+										被迅雷屏蔽的资源可以用这个下载。界面非常简单（简陋）。
+										<blockquote>
+											docker pull linuxserver/transmission<br />
+											docker create  --name=transmission   -e PUID=0 -e PGID=0 -e TRANSMISSION_WEB_HOME=/combustion-release \ <br />
+											-e TZ=Asia/Shanghai -p 9091:9091 -p 51413:51413 -p 51413:51413/udp  \<br />
+											-v /opt/transmission/config:/config \<br />
+											-v /opt/transmission/downloads:/downloads \<br />
+											-v /opt/transmission/downloads:/downloads/complete  \<br />
+											-v /opt/transmission/downloads:/watch/  \<br />
+											--restart unless-stopped   linuxserver/transmission
+
+										</blockquote>
+										注意修改-v /opt/transmission/downloads:/downloads 、-v /opt/transmission/downloads:/downloads/complete  、-v /opt/transmission/downloads:/watch/  的主机路径，建议改为移动硬盘上的地址，不要直接下到系统盘内。<br />
+										移动硬盘的位置是/srv中对应的某个文件夹<br />
+										使用方式为直接访问主机地址+端口号，例如192.168.X.X:9091<br />
+										*有时候可能出现下载存储位置异常，也就是说下载的内容没保存到挂载的文件夹内，而是存在了dock容器内部。此问题的解决方式详见下文“docker查看容器内部资源的方法”
+									</div>
+									<hr />
+									
+
+									<div>
+										<h2>BT下载之qBittorent(未实际测试)</h2>
+										未实际使用过，仅供测试。
+										<blockquote>
+											docker run -d \<br />
+											--name=qbittorrent \<br />
+											-e PUID=1000 \<br />
+											-e PGID=1000 \<br />
+											-e TZ=Asia/Shanghai \<br />
+											-e WEBUI_PORT=8080 \<br />
+											-p 6881:6881 \<br />
+											-p 6881:6881/udp \<br />
+											-p 10004:8080 \<br />
+											-v /share/CACHEDEV1_DATA/Container/Docker/Qbit/config:/config \<br />
+											-v /share/CACHEDEV1_DATA/Download:/downloads \<br />
+											--restart unless-stopped \<br />
+											ghcr.io/linuxserver/qbittorrent
+										  
+										</blockquote>
+										默认监听端口是6881，即使想要映射监听端口，也不要监听默认端口，大多数PT站都是禁了的，用6881端口进行PT下载就会遇到以下问题：“Port 6881 is blacklisted！”，端口被黑名单了。<br />
+										
+									</div>
+									<hr />
+									
+
+									<div>
+										<h2>Zerotier内网穿透</h2>
+										原文网址：https://blog.csdn.net/qq_41813208/article/details/125568313<br />
+										1、建立网络<br />
+										先在https://www.zerotier.com/ 建立一个NETWORK，获得Network ID<br />
+										2、NAS端安装插件：<br />
+										<blockquote>
+											docker run -d  \<br />
+											--name ZeroTier  \<br />
+											--restart=always \<br />
+											--device=/dev/net/tun \<br />
+											--net=host \<br />
+											--cap-add=NET_ADMIN \<br />
+											--cap-add=SYS_ADMIN \<br />
+											zerotier/zerotier-synology:latest  <br />
+											docker exec -it ZeroTier zerotier-cli join 233ccaac272dfa91
+
+										</blockquote>
+										需要把上边最后一句中的233ccaac272dfa91修改为自己申请的Network ID<br />
+										3、在https://www.zerotier.com/ 中对应的NETWORK设置中对新加入的设备进行勾选授权。<br />
+										4、手机/电脑下载app，用NETWOEK ID进行连接。重复步骤4.再次授权<br />
+
+									</div>
+									<hr />
+									
+
+									<div>
+										<h2>docker查看容器内部资源的方法：</h2>
+										用docker ps命令查看容器ID<br />
+										然后用<br />
+										docker exec -it  容器ID bash<br />
+										进入容器，随后可以用linux命令查看文件<br />
+										可用：<br />
+										ls 查看当前目录文件<br />
+										cd 文件夹名 进入文件夹<br />
+										rm -rf 文件/文件夹名 强制删除（可用*代替文件名，能强制删除目录下全部文件/文件夹）<br />
+										exit 退出docker容器<br />
+										docker cp 容器名:/容器内目录或文件路径 /要复制的目标容器外路径
+
+									</div>
+									<hr />
+
+									
+									<div>
+										<h2>挂载设备：</h2>
+										sudo fdisk -l    查看驱动器列表，可获得驱动器名称<br />
+										sudo mount /dev/sdb1 /media/usbHDD500G  前边是驱动器名称，后边是要挂载到的文件夹路径<br />
+
+									</div>
+									<hr />
+
+									<div>
+										<h2>OMV web界面进不去解决方案</h2>
+										cat /var/log/syslog 查看系统日志确定错误原因<br />
+										如果是PHP无法启动，则：<br />
+										sudo mkdir /var/run/php<br />
+										sudo apt install --reinstall php-fpm<br />
+
+									</div>
+									<hr />
+
+									<div>
+										<h2>linux瘦身</h2>
+										删除软件包<br />
+										dpkg --list | grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge<br />
+										删除没用的deb安装包<br />
+										sudo apt-get clean<br />
+										sudo apt-get autoclean<br />
+										删除孤儿软件包<br />
+										deborphan | xargs sudo apt-get purge -y<br />
+										删除过时的软件包<br />
+										sudo  aptitude purge ~o<br />
+										清理日志文件<br />
+										sudo ncdu /var/log<br />
+										删除大容量软件包<br />
+										用dpigs –H找出大的软件包，然后用sudo apt-get remove pac1 pac2 pac3… 删除大容量软件包。<br />
+
+									</div>
+									<hr />
+									
+									
+								</span>			
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<!--footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>1234 Somewhere Road #87257<br />
+								Nashville, TN 00000-0000</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">(000) 000-0000</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">info@untitled.tld</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer-->
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
