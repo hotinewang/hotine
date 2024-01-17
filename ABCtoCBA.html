@@ -63,7 +63,7 @@
 	<br /><br />
     <div>
 		<input type="file" id="hiddenFileInput"  style="display: none;" onchange="encryptFile()" />
-		<button onclick="selectAndLoadFile()">选择并转换文件</button>
+		<button onclick="selectAndLoadFile()">选择并加载文件</button>
 	</div>
 
     <div id="downloadLinks"></div>
@@ -104,22 +104,9 @@
 					swapArrayHalves(data);
 
 					const fileName = file.name;
-					const extensionMatch = fileName.match(/\.([^.]+)$/);
-					const extension = extensionMatch ? extensionMatch[1] : ''; // 获取文件后缀
-
-					let newFileName;
-
-					if (extension !== 'abc2cba') {
-						// 如果上传的文件后缀名不是abc2cba
-						newFileName = `${fileName}.abc2cba`;
-					} else {
-						// 如果上传的文件后缀名是abc2cba
-						const filenameWithoutExtension = fileName.replace(/\.abc2cba$/, '');
-						newFileName = filenameWithoutExtension;
-					}
-
+					
 					const blob = new Blob([data]);
-					const downloadLink = createDownloadLink(blob, newFileName);
+					const downloadLink = createDownloadLink(blob, fileName);
 					document.getElementById('downloadLinks').innerHTML = downloadLink;
 				};
 
@@ -128,14 +115,30 @@
 		}
 
 		function createDownloadLink(blob, fileName) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.type = 'application/octet-stream'; // 显式指定 MIME 类型
-            a.textContent = '下载：'+fileName;
-            return a.outerHTML;
-        }
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+
+			// 判断文件后缀名之前是否包含“.a2c”
+			if (fileName.includes('.a2c')) {
+				// 如果包含“.a2c”，则去掉“.a2c”
+				fileName = fileName.replace('.a2c', '');
+			} else {
+				// 如果不包含“.a2c”，则在后缀名之前添加“.a2c”
+				const extensionIndex = fileName.lastIndexOf('.');
+				if (extensionIndex !== -1) {
+					fileName = fileName.slice(0, extensionIndex) + '.a2c' + fileName.slice(extensionIndex);
+				} else {
+					// 如果没有后缀名，直接在文件名末尾添加“.a2c”
+					fileName += '.a2c';
+				}
+			}
+
+			a.download = fileName;
+			a.type = 'application/octet-stream';
+			a.textContent = '下载：' + fileName;
+			return a.outerHTML;
+		}
 
     </script>
 </body>
