@@ -63,7 +63,7 @@
 	<br /><br />
     <div>
 		<input type="file" id="hiddenFileInput"  style="display: none;" onchange="encryptFile()" />
-		<button onclick="selectAndLoadFile()">选择并加载文件</button>
+		<button onclick="selectAndLoadFile()">选择并转换文件</button>
 	</div>
 
     <div id="downloadLinks"></div>
@@ -132,6 +132,7 @@
             const a = document.createElement('a');
             a.href = url;
             a.download = fileName;
+            a.type = 'application/octet-stream'; // 显式指定 MIME 类型
             a.textContent = '下载：'+fileName;
             return a.outerHTML;
         }
