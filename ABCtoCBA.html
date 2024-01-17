@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件abc2cba转换</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #3165CF;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+			border:none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3a73ad;
+        }
+
+        #downloadLinks {
+            margin-top: 20px;
+        }
+
+        a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>文件abc2cba转换</h1>
+	<br /><br />
+    <div>
+		<input type="file" id="hiddenFileInput"  style="display: none;" onchange="encryptFile()" />
+		<button onclick="selectAndLoadFile()">选择并加载文件</button>
+	</div>
+
+    <div id="downloadLinks"></div>
+
+    <script>
+		function selectAndLoadFile() {
+            const hiddenFileInput = document.getElementById('hiddenFileInput');
+            hiddenFileInput.click();
+        }
+		
+		// 二进制数据ABC to CBA
+		function swapArrayHalves(array) {
+			const length = array.length;
+			const halfLength = Math.floor(length / 2);
+
+			if (length % 2 === 0) {
+				// 数据长度是偶数，直接前后互换
+				const newArray = Uint8Array.from([...array.subarray(halfLength), ...array.subarray(0, halfLength)]);
+				array.set(newArray);
+			} else {
+				// 数据长度是奇数，保持最中间的数据不动
+				const midIndex = Math.floor(length / 2);
+
+				// 将后半部分的数据移到前半部分（不包括中间的数据）
+				const newArray = Uint8Array.from([...array.subarray(midIndex + 1), array[midIndex], ...array.subarray(0, midIndex)]);
+				array.set(newArray);
+			}
+		}
+		function encryptFile() {
+			const fileInput = document.getElementById('hiddenFileInput');
+			const file = fileInput.files[0];
+
+			if (file) {
+				const reader = new FileReader();
+
+				reader.onload = function (e) {
+					const data = new Uint8Array(e.target.result);
+					swapArrayHalves(data);
+
+					const fileName = file.name;
+					const extensionMatch = fileName.match(/\.([^.]+)$/);
+					const extension = extensionMatch ? extensionMatch[1] : ''; // 获取文件后缀
+
+					let newFileName;
+
+					if (extension !== 'abc2cba') {
+						// 如果上传的文件后缀名不是abc2cba
+						newFileName = `${fileName}.abc2cba`;
+					} else {
+						// 如果上传的文件后缀名是abc2cba
+						const filenameWithoutExtension = fileName.replace(/\.abc2cba$/, '');
+						newFileName = filenameWithoutExtension;
+					}
+
+					const blob = new Blob([data]);
+					const downloadLink = createDownloadLink(blob, newFileName);
+					document.getElementById('downloadLinks').innerHTML = downloadLink;
+				};
+
+				reader.readAsArrayBuffer(file);
+			}
+		}
+
+		function createDownloadLink(blob, fileName) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.textContent = '下载：'+fileName;
+            return a.outerHTML;
+        }
+
+    </script>
+</body>
+</html>
