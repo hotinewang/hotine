@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件合并与拆分</title>
+	<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #3165CF;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+			border:none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3a73ad;
+        }
+
+        #downloadLinks {
+            margin-top: 20px;
+        }
+
+        a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+	<h1>文件拆分与合并</h1>
+
+	
+
+<input type="file" id="fileInput1" />
+<input type="file" id="fileInput2" />
+<button onclick="mergeFiles()">合并文件</button>
+
+<br /><br /><br /><br /><br />
+<input type="file" id="mergedFileInput" />
+<button onclick="splitFile()">拆分文件</button>
+
+<br /><br /><br /><br /><br />
+
+<button id="downloadMerged" style="display: none;">下载合并后的文件</button><br />
+<button id="downloadFile1" style="display: none;">下载文件1</button><br />
+<button id="downloadFile2" style="display: none;">下载文件2</button>
+
+<script>
+    let mergedFileBlob;
+
+	
+
+    function mergeFiles() {
+        const fileInput1 = document.getElementById('fileInput1');
+        const fileInput2 = document.getElementById('fileInput2');
+
+        const reader1 = new FileReader();
+        const reader2 = new FileReader();
+
+        reader1.onload = function () {
+            reader2.onload = function () {
+                const fileName1 = fileInput1.files[0].name;
+                const fileName2 = fileInput2.files[0].name;
+
+				//文件合并为：文件1数据+文件2数据+0xFF+文件1长度+0xFF+文件2名称
+                const mergedData = new Uint8Array([...new Uint8Array(reader1.result), ...new Uint8Array(reader2.result), 0xFF, ...new TextEncoder().encode(reader1.result.byteLength), 0xFF, ...new TextEncoder().encode(fileName2)]);
+                mergedFileBlob = new Blob([mergedData], { type: 'application/octet-stream' });
+				console.log("文件1长度："+reader1.result.byteLength);
+                console.log("文件已合并");
+                enableDownloadButton('downloadMerged', '下载合并后的文件', fileName1, mergedFileBlob);
+            };
+
+            reader2.readAsArrayBuffer(fileInput2.files[0]);
+        };
+		
+		if(fileInput1.files[0]&&fileInput2.files[0])
+		{
+			reader1.readAsArrayBuffer(fileInput1.files[0]);
+		}else
+		{
+			alert("未上传有效的文件");
+		}
+    }
+
+    function splitFile() {
+		const mergedFileInput = document.getElementById('mergedFileInput');
+		const reader = new FileReader();
+
+		reader.onload = function () {
+			const dataArray = new Uint8Array(reader.result);
+			const marker = new Uint8Array([0xFF]);
+
+			const markerIndex1 = findMarkerIndex(dataArray, marker);//最后一个
+			const markerIndex2 = findMarkerIndex(dataArray, marker, 1);//倒数第二个
+			//console.error("文件分割符位置："+markerIndex2+","+markerIndex1);
+			
+			if (markerIndex1 !== -1 && markerIndex2 !== -1) {
+				const fileName1=mergedFileInput.files[0].name;
+				const fileName2=new TextDecoder().decode(dataArray.slice(markerIndex1 + marker.length));
+				console.error("文件名称："+fileName1+","+fileName2);
+				
+				const fileLength1 = new TextDecoder().decode(dataArray.slice(markerIndex2 + marker.length,markerIndex1));
+				console.error("文件1长度："+fileLength1);
+				//----*****************************************************************************************************
+				//const fileName1Length = fileInfo1[0];
+				//const fileName1 = new TextDecoder().decode(fileInfo1.slice(1, fileName1Length + 1));
+
+				//const fileInfo2 = dataArray.slice(markerIndex2 + marker.length);
+				//const fileName2 = new TextDecoder().decode(fileInfo2.slice(1));
+
+				const file1Blob = new Blob([dataArray.slice(0, fileLength1)]);
+				const file2Blob = new Blob([dataArray.slice(fileLength1,markerIndex2)]);
+
+				enableDownloadButton('downloadFile1', '下载文件1', fileName1, file1Blob);
+				enableDownloadButton('downloadFile2', '下载文件2', fileName2, file2Blob);
+
+				console.log("文件已成功拆分");
+			} else {
+				console.error("未找到足够的文件分割符信息。");
+			}
+		};
+
+		
+		if(mergedFileInput.files[0])
+		{
+			reader.readAsArrayBuffer(mergedFileInput.files[0]);
+		}
+		else
+		{
+			alert("未上传有效的文件");
+		}
+	}
+
+	function enableDownloadButton(buttonID, buttonText, fileName, blob) {
+		const downloadButton = document.getElementById(buttonID);
+		if (downloadButton) {
+			downloadButton.style.display = 'inline-block';
+			downloadButton.textContent = buttonText;
+			downloadButton.onclick = function () {
+				const url = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = fileName;
+				a.click();
+				window.URL.revokeObjectURL(url);
+			};
+		}
+	}
+
+	//从后往前从array中查找匹配marker的索引。match用于指定返回第几个匹配处的索引
+	function findMarkerIndex(array, marker, matchIndex=0) {
+		let matchCount=-1;
+		for (let i = array.length - 1; i >= 0; i--) 
+		{
+			let match = true;
+			for (let j = marker.length - 1; j >= 0; j--) 
+			{
+				if (array[i - (marker.length - 1 - j)] !== marker[j]) {
+					match = false;
+					break;
+				}
+			}
+			if (match) 
+			{
+				matchCount+=1;
+				if(matchCount==matchIndex)
+				{
+					return i - marker.length + 1;
+				}
+			}
+		}
+
+		return -1; // 如果未找到，则返回 -1
+	}
+</script>
+
+</body>
+</html>
